@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EDA Report</title>
+  </head>
+  <body>
+    <h2>Exploratory Data Analysis</h2>
+    <h3>Statistical Summary</h3>
+    {{ stats|safe }}
+
+    <h3>Correlation Heatmap</h3>
+    <img src="data:image/png;base64,{{ heatmap }}" />
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Analyze Dataset</title>
+  </head>
+  <body>
+    <h2>Dataset: {{ file }}</h2>
+    <a href="/eda/{{ file }}">Perform EDA</a>
+
+    <h3>Train Model</h3>
+    <form action="/train" method="post">
+      <input type="hidden" name="filename" value="{{ file }}" />
+      <label>Target Column: </label>
+      <input type="text" name="target" required />
+      <label>Model Type: </label>
+      <select name="model">
+        <option value="regression">Regression</option>
+        <option value="classification">Classification</option>
+      </select>
+      <button type="submit">Train</button>
+    </form>
+  </body>
+</html>
