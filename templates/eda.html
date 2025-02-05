@@ -4,11 +4,33 @@
     <title>EDA Report</title>
   </head>
   <body>
-    <h2>Exploratory Data Analysis</h2>
-    <h3>Statistical Summary</h3>
-    {{ stats|safe }}
+    <h2>Exploratory Data Analysis (EDA)</h2>
 
-    <h3>Correlation Heatmap</h3>
-    <img src="data:image/png;base64,{{ heatmap }}" />
+    <h3>Dataset Overview</h3>
+    <b>Shape:</b> {{ eda_results["shape"] }} <br />
+    <b>First 5 Rows:</b> {{ eda_results["head"]|safe }} <br />
+    <b>Basic Statistics:</b> {{ eda_results["describe"]|safe }} <br />
+    <b>Unique Values per Column:</b> {{ eda_results["unique_values"]|safe }}
+    <br />
+    <b>Missing Values:</b> {{ eda_results["missing_values"]|safe }} <br />
+
+    <h3>Missing Values Heatmap</h3>
+    <img
+      src="{{ url_for('static', filename='missing_heatmap.png') }}"
+      width="600"
+    />
+
+    <h3>Histograms</h3>
+    <img src="{{ url_for('static', filename='histograms.png') }}" width="800" />
+
+    <h3>Boxplot for Outliers</h3>
+    <img src="{{ url_for('static', filename='boxplot.png') }}" width="800" />
+
+    <h3>Pairplot (Feature Relationships)</h3>
+    {% if "pairplot" in eda_results %}
+    <img src="{{ url_for('static', filename='pairplot.png') }}" width="800" />
+    {% else %}
+    <p>Pairplot not generated (only applicable for numeric datasets).</p>
+    {% endif %}
   </body>
 </html>
