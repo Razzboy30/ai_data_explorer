@@ -51,4 +51,5 @@ This project is a Flask-based web application that allows you to:
 You can install the required Python packages using pip:
 
 ```bash
-pip install flask pandas scikit-learn requests matplotlib seaborn
+pip install -r requirements.txt
+
