@@ -2,35 +2,80 @@
 <html>
   <head>
     <title>EDA Report</title>
+    <style>
+      img {
+        margin-bottom: 20px;
+      }
+      .section {
+        margin-bottom: 40px;
+      }
+    </style>
   </head>
   <body>
     <h2>Exploratory Data Analysis (EDA)</h2>
 
-    <h3>Dataset Overview</h3>
-    <b>Shape:</b> {{ eda_results["shape"] }} <br />
-    <b>First 5 Rows:</b> {{ eda_results["head"]|safe }} <br />
-    <b>Basic Statistics:</b> {{ eda_results["describe"]|safe }} <br />
-    <b>Unique Values per Column:</b> {{ eda_results["unique_values"]|safe }}
-    <br />
-    <b>Missing Values:</b> {{ eda_results["missing_values"]|safe }} <br />
+    <div class="section">
+      <h3>Dataset Overview</h3>
+      <b>Shape:</b> {{ eda_results["shape"] }} <br />
+      <b>First 5 Rows:</b> {{ eda_results["head"]|safe }} <br />
+      <b>Basic Statistics:</b> {{ eda_results["describe"]|safe }} <br />
+      <b>Unique Values per Column:</b> {{ eda_results["unique_values"]|safe }}
+      <br />
+      <b>Missing Values:</b> {{ eda_results["missing_values"]|safe }} <br />
+    </div>
 
-    <h3>Missing Values Heatmap</h3>
-    <img
-      src="{{ url_for('static', filename='missing_heatmap.png') }}"
-      width="600"
-    />
+    <div class="section">
+      <h3>Missing Values Heatmap</h3>
+      <img
+        src="{{ url_for('static', filename='missing_heatmap.png') }}"
+        width="600"
+        alt="Missing Heatmap"
+      />
+    </div>
 
-    <h3>Histograms</h3>
-    <img src="{{ url_for('static', filename='histograms.png') }}" width="800" />
+    <div class="section">
+      <h3>Histograms with KDE</h3>
+      <img
+        src="{{ url_for('static', filename='histograms_kde.png') }}"
+        width="800"
+        alt="Histograms with KDE"
+      />
+    </div>
 
-    <h3>Boxplot for Outliers</h3>
-    <img src="{{ url_for('static', filename='boxplot.png') }}" width="800" />
+    <div class="section">
+      <h3>Boxplots for Numeric Columns</h3>
+      <img
+        src="{{ url_for('static', filename='boxplots.png') }}"
+        width="800"
+        alt="Boxplots"
+      />
+    </div>
 
-    <h3>Pairplot (Feature Relationships)</h3>
-    {% if "pairplot" in eda_results %}
-    <img src="{{ url_for('static', filename='pairplot.png') }}" width="800" />
-    {% else %}
-    <p>Pairplot not generated (only applicable for numeric datasets).</p>
-    {% endif %}
+    <div class="section">
+      <h3>Correlation Heatmap</h3>
+      <img
+        src="{{ url_for('static', filename='correlation_heatmap.png') }}"
+        width="800"
+        alt="Correlation Heatmap"
+      />
+    </div>
+
+    <div class="section">
+      <h3>Count Plots for Categorical Variables</h3>
+      <img
+        src="{{ url_for('static', filename='countplots.png') }}"
+        width="800"
+        alt="Count Plots"
+      />
+    </div>
+
+    <div class="section">
+      <h3>Pairplot (Feature Relationships)</h3>
+      <img
+        src="{{ url_for('static', filename='pairplot.png') }}"
+        width="800"
+        alt="Pairplot"
+      />
+    </div>
   </body>
 </html>

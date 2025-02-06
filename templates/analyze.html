@@ -2,17 +2,59 @@
 <html>
   <head>
     <title>Analyze Dataset</title>
+    <script>
+      function loadFeatures() {
+        var featureFile = document.getElementById("feature_file").value;
+
+        if (!featureFile) {
+          alert("Please enter a feature file path!");
+          return;
+        }
+
+        fetch("/get_features", {
+          method: "POST",
+          body: new URLSearchParams({ feature_file: featureFile }),
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Feature Response:", data);
+            if (data.error) {
+              alert("Error: " + data.error);
+              return;
+            }
+            if (data.features) {
+              var form = document.getElementById("prediction_form");
+              form.innerHTML =
+                '<input type="hidden" name="model_file" value="' +
+                document.getElementById("model_file").value +
+                '">';
+              data.features.forEach((feature) => {
+                form.innerHTML += "<label>" + feature + ":</label>";
+                form.innerHTML +=
+                  '<input type="text" name="' + feature + '" required>';
+              });
+              form.innerHTML += '<button type="submit">Predict</button>';
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching feature names:", error);
+            alert("Failed to load features. Check console for details.");
+          });
+      }
+    </script>
   </head>
   <body>
     <h2>Dataset: {{ file }}</h2>
-    <a href="/eda/{{ file }}">Perform EDA</a>
+    <!-- Open EDA in a new tab -->
+    <a href="/eda/{{ file }}" target="_blank">Perform EDA</a>
 
     <h3>Train Model</h3>
     <form action="/train" method="post">
       <input type="hidden" name="filename" value="{{ file }}" />
-      <label>Target Column: </label>
+      <label>Target Column:</label>
       <input type="text" name="target" required />
-      <label>Model Type: </label>
+      <label>Model Type:</label>
       <select name="model">
         <option value="regression">Regression</option>
         <option value="classification">Classification</option>
@@ -21,21 +63,26 @@
     </form>
 
     <h3>Make a Prediction</h3>
-    <form action="/predict" method="post">
-      <label>Model File: </label>
-      <input
-        type="text"
-        name="model_file"
-        required
-        placeholder="Enter model file path"
-      />
+    <label>Model File:</label>
+    <input
+      type="text"
+      id="model_file"
+      name="model_file"
+      placeholder="Enter model file path"
+    />
 
-      <label>Input Features:</label>
-      <input type="text" name="feature1" required placeholder="Feature 1" />
-      <input type="text" name="feature2" required placeholder="Feature 2" />
-      <input type="text" name="feature3" required placeholder="Feature 3" />
+    <label>Feature File:</label>
+    <input
+      type="text"
+      id="feature_file"
+      name="feature_file"
+      placeholder="Enter feature file path"
+    />
 
-      <button type="submit">Predict</button>
+    <button onclick="loadFeatures()">Load Features</button>
+
+    <form action="/predict" method="post" id="prediction_form">
+      <!-- Feature inputs will be dynamically added here -->
     </form>
   </body>
 </html>
